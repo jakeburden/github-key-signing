@@ -2,17 +2,37 @@
 <title>GitHub Messenger</title>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="/kbpgp/kbpgp-2.0.8-min.js"></script>
 
-<body ng-app="messenger" ng-controller="messagesController">
+<body ng-app="messenger" >
 
-  <section>
+  <section ng-controller="messagesController">
     <header>
       <h1>Messenger lalala</h1>
-      <a href="/api/auth/logout">Logout &raquo;</a>
+      <div class="controls">
+        <a href="#" ng-click="displayKeyDialog = !displayKeyDialog">
+          <span ng-if="!private_key">
+            Key: <span style="color:magenta">NONE</span></span>
+          <span ng-if="private_key">
+            Key: <span style="color:lightgreen">ATTACHED</span></span>
+        </a> 
+        <a href="/api/auth/logout">Logout</a>
+      </div>
     </header>
 
     <article ng-if="messages.length < 1">Loading....</article>
-    <ul>
+
+    <ul class="key-dialog" ng-show="displayKeyDialog">
+      <li> Private GPG key setup </li>
+      <li>
+        <textarea placeholder="Private GPG Key..." ng-model="private_key"></textarea>
+      </li>
+      <li>
+        <input type="password" placeholder="Passphrase... " ng-model="passphrase">
+      </li>
+    </ul>
+
+    <ul ng-hide="displayKeyDialog">
       <li ng-repeat="record in messages">
         <div><span><em >from</em> {{record.user}} <em>at {{record.date}}</em></span><i ng-if="record.signed">✓</i></div>
         {{record.message}}
@@ -30,119 +50,4 @@
 </body>
 
 <script src="/messenger.js"></script>
-
-
-<style>
-  * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box
-  }
-
-  html, body {
-    height: 100%;
-    font-family: sans-serif;
-  }
-
-  header {
-    margin: 0.5em 1em;
-  }
-
-  header h1 {
-    float :left;
-    color: steelblue;
-  }
-
-  header a {
-    font-size: 1.1em;
-    text-decoration: none;
-    color: #444;
-    float: right;
-  }
-
-  header a:hover {
-    text-decoration: underline;
-  }
-
-  ul { 
-    list-style : none;
-    flex-grow: 1;
-    overflow: auto;
-  }
-
-  ul li {
-    padding: 0.4em 1em;
-    margin: 1em 0;
-    font-size: 1.5em;
-  }
-
-  li > div {
-    margin: 0 0 0.2em 0;
-  }
-  li > div > span {
-   font-size: 0.8em;
-   color: #444;
-  }
-
-  li > div > span > em {
-    font-size: 0.6em;
-  }
-
-  li > div i {
-    font-size: 1.5em;
-    color: lightgreen;
-    margin: 0 0.2em;
-  }
-
-  li > div {
-    font-size: 0.8;
-    text-indent: 0;
-  }
-  body > section {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .new-message {
-    border: 1px solid #ddd;
-    border-radius: 0 0.6em 0.6em 0;
-    margin: 1em;
-    display: flex;
-    flex-direction: row;
-  }
-  .new-message > * {
-    height: 3em;
-    font-size: 1.5em;
-  }
-
-  .new-message input {
-    display: inline-block;
-    width: 100%;
-    margin-right: -6.5em;
-    border: none;
-   text-indent: 1em;
-  }
-  .new-message button {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-    border: none;
-    cursor: pointer;
-    background: #444;
-    color: #fff;
-    border-radius: 0 0.2em 0.2em 0;
-  }
-
-  .new-message button:hover {
-    background: #333;
-  }
-
-  .new-message button:disabled {
-    background: #ccc;
-    cursor: unset;
-  }
-
-</style>
+<link rel="stylesheet" href="/messenger.css">

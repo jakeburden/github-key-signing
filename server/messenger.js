@@ -1,3 +1,4 @@
+var kbpgp = require('../public/kbpgp/kbpgp-2.0.8');
 
 var messages = [
   { user : 'server', date : new Date().toString(), 'message' : 'Hi !', signed : true}
@@ -13,6 +14,27 @@ var pushMessage = function(msg) {
   messages.push(msg);
 };
 
+
+var importKey = function(data, callback) {
+  if (data[0] && data[0].public_key) {
+
+    var binData = Buffer.from(data[0].public_key, 'base64');
+//    var binData = pp.unpack(Buffer.from(data[0].public_key, 'base64'));
+
+
+    kbpgp.KeyManager.import_from_pgp_message(
+      { msg : binData }, function(err, key) {
+        if(err) { callback(err); return;}
+        callback(null, key);
+    });
+  }
+};
+
+var verifyMessage = function(message, callback) {
+
+};
+
+
 module.exports = function(io) {
   io.sockets.on('connection', function(socket) {
     if (socket.handshake.session.user) {
@@ -20,6 +42,11 @@ module.exports = function(io) {
     } else {
       socket.emit('login', false);
     }
+
+
+ importKey(socket.handshake.session.user.gpg_keys, function(e,k) {
+  console.log(arguments);
+});
 
 
     socket.on('new-message', function(data) {
@@ -32,8 +59,12 @@ module.exports = function(io) {
 
       pushMessage(message);
       io.sockets.emit('message', message);
+
     });
 
+   socket.on('signed-message', function(data) {
+    
+   });
 
   });
 };

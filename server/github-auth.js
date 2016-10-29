@@ -4,12 +4,27 @@ var githubOAuth = require('github-oauth')({
   baseURL: process.env.BASE_URI,
   loginURI: '/api/auth/login',
   callbackURI: '/api/auth/callback',
-  scope: ''
+  scope: 'read:gpg_key'
 });
 
 var request = require('request');
 
 module.exports = function(app, db) {
+
+  function attachKey(token, req, res) {
+    request.get({
+      url : 'https://api.github.com/user/gpg_keys',
+      json: true,
+      headers : {
+        'User-Agent': 'GitHub key signing example app',
+        'Accept' : 'application/vnd.github.cryptographer-preview',
+        'Authorization': 'token ' + token
+      }
+    }, function(err, resp, body) {
+      req.session.user.gpg_keys = body;
+      res.redirect('/');
+    });
+  }
 
   function authorizeAndSave(token, req, res) {
     request.get({
@@ -21,7 +36,7 @@ module.exports = function(app, db) {
       }
     }, function(err, resp, body) {
       req.session.user = body;
-      res.redirect('/');
+      attachKey(token, req, res);
     });
   }
 

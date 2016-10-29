@@ -18,8 +18,8 @@
 
 ### #4 Web client
 
-- [ ] Ask user password if current session (password manager) does not have saved password
-- [ ] Sign message with public key
+- [x] Ask user password if current session (password manager) does not have saved password
+- [x] Sign message with public key
 - [x] Highlight signed messages
 - [x] Logout
 
