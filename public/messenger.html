@@ -1,0 +1,53 @@
+<!doctype html>
+<title>GitHub Messenger</title>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://raw.githubusercontent.com/b37t1td/github-key-signing/master/public/kbpgp/kbpgp-2.0.8-min.js"></script>
+
+<body ng-app="messenger" >
+
+  <section ng-controller="messagesController">
+    <header>
+      <h1>Messenger lalala</h1>
+      <div class="controls">
+        <a href="#" ng-click="displayKeyDialog = !displayKeyDialog">
+          <span ng-if="!private_key">
+            Key: <span style="color:magenta">NONE</span></span>
+          <span ng-if="private_key">
+            Key: <span style="color:lightgreen">ATTACHED</span></span>
+        </a> 
+        <a href="/api/auth/logout">Logout</a>
+      </div>
+    </header>
+
+    <article ng-if="messages.length < 1">Loading....</article>
+
+    <ul class="key-dialog" ng-show="displayKeyDialog">
+      <li> Private GPG key setup </li>
+      <li>
+        <textarea placeholder="Private GPG Key..." ng-model="private_key"></textarea>
+      </li>
+      <li>
+        <input type="password" placeholder="Passphrase... " ng-model="passphrase">
+      </li>
+    </ul>
+
+    <ul ng-hide="displayKeyDialog">
+      <li ng-repeat="record in messages">
+        <div><span><em >from</em> {{record.user}} <em>at {{record.date}}</em>  <em>{{record.key}}</em></span><i ng-if="record.signed">✓</i> </div>
+        {{record.message}}
+      </li>
+      <li><a name="end"></a></li>
+    </ul>
+    <section>
+      <div class="new-message">
+        <input type="text" ng-model="newMessage" ng-keypress="sendMessage($event)" placeholder="New message..">
+        <button ng-disabled="!newMessage" disabled autofocus ng-click="sendMessage()">Send</button>
+      </div>
+   </section>
+  </section>
+
+</body>
+
+<script src="/messenger.js"></script>
+<link rel="stylesheet" href="/messenger.css">
