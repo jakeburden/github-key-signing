@@ -44,6 +44,7 @@ io.use(ios(session));
 require('./messenger')(io);
 
 app.get('/', function(req, res, next) {
+
   if (!req.session.user) {
     res.sendFile(path.resolve(__dirname +'/../public/login.html'));
   } else {

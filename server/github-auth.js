@@ -1,7 +1,7 @@
 var githubOAuth = require('github-oauth')({
   githubClient: process.env.GITHUB_CLIENT_ID,
   githubSecret: process.env.GITHUB_CLIENT_SECRET,
-  baseURL: process.env.BASE_URI,
+  baseURL: process.env.NOW_URL,
   loginURI: '/api/auth/login',
   callbackURI: '/api/auth/callback',
   scope: 'read:gpg_key'
