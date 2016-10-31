@@ -12,8 +12,8 @@
 
 ### #3 Handling keys on server
 
-- [ ] Share public key of current user with web client
-- [ ] Verify signed messages (set mark)
+- [x] Share public key of current user with web client
+- [x] Verify signed messages (set mark)
 - [x] Logout
 
 ### #4 Web client

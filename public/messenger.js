@@ -40,7 +40,7 @@
 
   var sendMessage = function(private_key, passphrase, message) {
     if (!private_key) {
-      socket.emit('new-message', $scope.newMessage);
+      socket.emit('new-message', message);
       return;
     }
 
@@ -50,7 +50,7 @@
       signMessage(key_manager, message, function(err, rs, rb) {
         if (err) { alert(err); return; }
 
-        socket.emit('signed-message', { rs : rs, rb : rb  });
+        socket.emit('signed-message', rs);
       });
     });
   }
@@ -93,52 +93,5 @@
     };
 
   });
-  
 
-  
-  
-  //kbpgp.KeyManager.import_from_armored_pgp({
-//  armored: pr_key
-//}, function(err, alice) {
-//  if (!err) {
-//    if (alice.is_pgp_locked()) {
-//      alice.unlock_pgp({
-//        passphrase: 'JdnxAA33'
-//      }, function(err) {
-//        if (!err) {
-//          //kmg = alice;
-//          console.log("Loaded private key with passphrase");
-//        }
-//      });
-//    } else {
-//      console.log("Loaded private key w/o passphrase");
-//    }
-//  }
-//          kmg = alice;
-//});
-//
-//kbpgp.KeyManager.import_from_armored_pgp({
-//  armored: pub_key
-//}, function(err, alice) {
-//  pmg = alice;
-//});
-//
-//
-//var params = {
-//  sign_with:   kmg,
-//  msg:         "Hey Chuck - my bitcoin address is 1alice12345234..."
-//};
-//
-//kbpgp.box(params, function(err, result_string, result_buffer) {
-//  console.log(err, result_string, result_buffer);
-//
-//  kbpgp.unbox({
-//    armored : result_string,
-//    keyfetch : pmg
-//  }, function(err, lit) {
-//    console.log(err);
-//    console.log(lit);
-//  });
-//});
-//
 })();

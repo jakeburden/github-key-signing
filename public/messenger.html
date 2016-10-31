@@ -34,7 +34,7 @@
 
     <ul ng-hide="displayKeyDialog">
       <li ng-repeat="record in messages">
-        <div><span><em >from</em> {{record.user}} <em>at {{record.date}}</em></span><i ng-if="record.signed">✓</i></div>
+        <div><span><em >from</em> {{record.user}} <em>at {{record.date}}</em>  <em>{{record.key}}</em></span><i ng-if="record.signed">✓</i> </div>
         {{record.message}}
       </li>
       <li><a name="end"></a></li>
